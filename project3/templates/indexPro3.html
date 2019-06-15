@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>People of Time</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- Leaflet CSS & JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script> 
+  <!-- Load d3.js -->
+  <script src="https://d3js.org/d3.v4.js"></script>
+  <!-- Function for radial charts -->
+
+
+  <!-- Our CSS -->
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <!-- <script scr=href="{{ url_for('static', filename='time3.jpg3') }}"> -->
+  
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="map">Map</a>
+        <a href="relationships">Relationships</a>
+      </div>
+      <hr>
+  <div class="container">
+    <div class="row">
+    <div class="col-md-12 jumbotron text-center" id="header">
+      </div>
+      
+    </div>
+    
+    <div class="row">
+        <!-- <a href=map class=“btn btn-primary” role=“button”>Map</a>
+        <a href=relationships class=“btn btn-primary” role=“button”>Relationships</a> -->
+      <div class="col-md-3">
+        <div class="well">
+          <h5>This chart measures how many times an individual was featured on the cover of Time Magazine.</h5>
+          <h5>SELECT Timespan:</h5>
+          <select id="selDataset" onchange="optionChanged(this.value)"></select>
+        </div>
+      
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title">Major Historical Events</h3>
+          </div>
+          <div id="sample-metadata" class="panel-body"></div>
+        </div>
+        </div>
+        <div class="col-md-9">
+          <div id="bar"></div>
+        </div>
+        <div class="col-md-9">
+            <div id="pie"></div>
+          </div>
+          <div class="col-md-9">
+              <div id="gauge"></div>
+            </div>
+      </div>
+      <!-- <div class="col-md-9">
+        <div id="pie"></div>
+      </div> -->
+      <!-- <div class="col-md-9">
+        <div id="gauge"></div>
+      </div> -->
+      <div class="row">
+    </div>
+    </div>
+    
+  </div>
+
+  
+  <script src="https://cdn.plot.ly/plotly-1.31.2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!-- <script src="{{ url_for('static', filename='js/logic.js') }}"></script>  -->
+  <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3-scale-radial.js"></script>
+
+  <script src="{{ url_for('static', filename='js/radial_bar.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/all_app.js') }}"></script>
+
+
+</body>
+
+</html>

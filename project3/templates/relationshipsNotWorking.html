@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<meta charset=“utf-8”>
+<style>
+
+.links line {
+ stroke: #999;
+ stroke-opacity: 0.6;
+}
+
+.nodes circle {
+ stroke: #fff;
+ stroke-width: 1.5px;
+}
+<script src="json" href="{{ url_for('static', filename='dicttwo.json') }}"></script>
+</style>
+
+<div class=“container”>
+ <div class=“jumbotron” style=“text-align: center”>
+   <h1>Time Magazine Relationship Graph</h1>
+       <p>This is a force-directed graph illustrating the relationships between the people mentioned in the Time Magazine dataset.</p>
+       <hr>
+       <svg width=“960” height=“600"></svg>
+       <hr>
+       <p>There are some interesting qualitative observations to be made here. When looking at the main cluster we can see that
+         the left side tends to feature relationships between persons that are more interconnected within the Republican party. Meanwhile, the right side of the cluster
+         tends to feature relationships between persons that are more interconnected with the Democratic party. For example, towards the left you will see names like George Bush,
+         Rick Santorum, Ronald Reagen, and Ron Paul while to the right of the main cluster you will see names like Barack Obama, Bernie Sanders, Hillary Clinton, and Dianne Feinstein.
+         Towards the middle you will see names like Jeb Bush, John Boehner, Bill Clinton, Carl Ichan, and Elon Musk. Around the outside of the cluster is when you may see individuals
+         who are more independent. Because of the fact that we can infer the political affiliation of people based on their placement in the web, it’s clear
+         that political candidates, public officials, and business persons are more likely to have a large number of relationships.
+       </p>
+   </div>
+ </div>
+   <svg width=“960” height=“600"></svg>
+<script src=“https://d3js.org/d3.v4.min.js“></script>
+<script>
+
+var svg = d3.select(“svg”),
+   width = +svg.attr(“width”),
+   height = +svg.attr(“height”);
+
+var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+ var zoom_handler = d3.zoom()
+.on(“zoom”, zoom_actions);
+
+zoom_handler(svg);
+
+var simulation = d3.forceSimulation()
+   .force(“link”, d3.forceLink().id(function(d) { return d.id; }))
+   .force(“charge”, d3.forceManyBody())
+   .force(“center”, d3.forceCenter(width / 2, height / 2));
+
+ var g = svg.append(“g”)
+.attr(“class”, “everything”);
+
+d3.json(“static/dicttwo.json”, function(error, graph) {
+ if (error) throw error;
+
+ var link = g.append(“g”)
+     .attr(“class”, “links”)
+   .selectAll(“line”)
+   .data(graph.links)
+   .enter().append(“line”)
+     .attr(“stroke-width”, function(d) { return Math.sqrt(d.value); });
+
+ var node = g.append(“g”)
+     .attr(“class”, “nodes”)
+   .selectAll(“circle”)
+   .data(graph.nodes)
+   .enter().append(“circle”)
+     .attr(“r”, 5)
+     .attr(“fill”, function(d) { return color(d.group); })
+     .call(d3.drag()
+         .on(“start”, dragstarted)
+         .on(“drag”, dragged)
+         .on(“end”, dragended));
+
+ node.append(“title”)
+     .text(function(d) { return d.name; });
+
+ simulation
+     .nodes(graph.nodes)
+     .on(“tick”, ticked);
+
+ simulation.force(“link”)
+     .links(graph.links);
+
+ function ticked() {
+   link
+       .attr(“x1”, function(d) { return d.source.x; })
+       .attr(“y1", function(d) { return d.source.y; })
+       .attr(“x2”, function(d) { return d.target.x; })
+       .attr(“y2", function(d) { return d.target.y; });
+
+   node
+       .attr(“cx”, function(d) { return d.x; })
+       .attr(“cy”, function(d) { return d.y; });
+ }
+
+
+});
+
+     function zoom_actions(){
+g.attr(“transform”, d3.event.transform)
+}
+
+function dragstarted(d) {
+ if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+ d.fx = d.x;
+ d.fy = d.y;
+}
+
+function dragged(d) {
+ d.fx = d3.event.x;
+ d.fy = d3.event.y;
+}
+
+function dragended(d) {
+ if (!d3.event.active) simulation.alphaTarget(0);
+ d.fx = null;
+ d.fy = null;
+}
+
+</script>
